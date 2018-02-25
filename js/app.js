@@ -1,13 +1,13 @@
 $(document).ready(function() {
-    $.get("https://accesscontrolalloworiginall.herokuapp.com/http://digg.com/api/news/popular.json", function(results){
-        console.log("hi");
-        console.log(results);
-        // results.data.feed.forEach(function(result){
-        //     $("ul").append("<li>"+result.content.title+"</li>");
-        // });
-    });
-
-    var root = 'https://jsonplaceholder.typicode.com';
+    // $.get("https://accesscontrolalloworiginall.herokuapp.com/http://digg.com/api/news/popular.json", function(results){
+    //     console.log("hi");
+    //     console.log(results);
+    //     // results.data.feed.forEach(function(result){
+    //     //     $("ul").append("<li>"+result.content.title+"</li>");
+    //     // });
+    // });
+    //
+    // var root = 'https://jsonplaceholder.typicode.com';
 
     // $.ajax({
     //     url: root + '/posts/1',
@@ -22,6 +22,7 @@ $(document).ready(function() {
     url += '?' + $.param({
         'api-key': "1b5c0536a9cf49be87c49d7cc0e140c3"
     });
+
     $.ajax({
         url: url,
         method: 'GET',
