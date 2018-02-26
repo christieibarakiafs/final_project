@@ -19,13 +19,22 @@ function addArticle(article){
     dom_title.appendChild(title);
     dom_sectionTitle.appendChild(dom_title);
 
-    var dom_type = document.createElement("H6");
+    var dom_type = document.createElement("H5");
     var type = document.createTextNode(article.category);
+    type.className = "type";
     dom_type.appendChild(type);
-    dom_sectionTitle.appendChild(dom_type);
+
+
+    dom_sectionImage.appendChild(dom_type);
 
     var clearfix = document.createElement("div");
     clearfix.className = "clearfix";
+
+    var dom_sectionSnippet = document.createElement("SECTION");
+    dom_sectionSnippet.className = "snippet";
+    var snippet = document.createTextNode(article.summary);
+    dom_sectionSnippet.appendChild(snippet);
+    dom_sectionTitle.appendChild(dom_sectionSnippet);
 
     dom_article.appendChild(dom_sectionImage);
     dom_article.appendChild(dom_sectionTitle);
@@ -95,6 +104,10 @@ $(document).ready(function() {
                     article.pub_date);
                 nytList.push(article);
             });
+
+            for(article in nytList){
+                addArticle(nytList[article]);
+            }
 
         })
         .fail(function(err) {
