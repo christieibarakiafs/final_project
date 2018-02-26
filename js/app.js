@@ -1,32 +1,75 @@
+function Article(title, category, imageUrl, summary, url, date) {
+    this.title = title;
+    this.category = category;
+    this.imageUrl = imageUrl;
+    this.summary = summary;
+    this.url = url;
+    this.date = date;
+}
+
+var guardianList = [];
+var nytList = [];
+
 $(document).ready(function() {
-    // $.get("https://accesscontrolalloworiginall.herokuapp.com/http://digg.com/api/news/popular.json", function(results){
-    //     console.log("hi");
-    //     console.log(results);
-    //     // results.data.feed.forEach(function(result){
-    //     //     $("ul").append("<li>"+result.content.title+"</li>");
-    //     // });
-    // });
-    //
-    // var root = 'https://jsonplaceholder.typicode.com';
-
-    // $.ajax({
-    //     url: root + '/posts/1',
-    //     method: 'GET'
-    // }).then(function(data) {
-    //     $('p:first-of-type').html(JSON.stringify(data));
-    //     // Let's insert the "title" into the p with id "title" and the "body" into the p with id "body"
-    // });
-
-    // Built by LucyBot. www.lucybot.com
-    var url = "https://api.nytimes.com/svc/suggest/v1/timestags.json";
-    url += '?' + $.param({
-        'api-key': "1b5c0536a9cf49be87c49d7cc0e140c3"
-    });
-
+    var url = "https://accesscontrolalloworiginall.herokuapp.com/https://api.nytimes.com/svc/search/v2/articlesearch.json";
+    url +=
+        "?" +
+        $.param({
+            "api-key": "1b5c0536a9cf49be87c49d7cc0e140c3",
+            q: "artificial intelligence",
+            begin_date: "20180101",
+            fl:
+                "headline, web_url, snippet, abstract, source, pub_date, section_name, document_type, multimedia",
+            facet_field: "section_name, document_type"
+        });
     $.ajax({
         url: url,
-        method: 'GET',
-    }).then(function(result) {
-        console.log(result);
-    });
+        method: "GET"
+    })
+        .done(function(result) {
+            var results = result.response.docs;
+            results.forEach(function(article) {
+                var article = new Article(article.headline.main,
+                    article.section_name,
+                    article.multimedia[2].url,
+                    article.snippet,
+                    article.web_url,
+                    article.pub_date);
+                nytList.push(article);
+            });
+            console.log(nytList);
+        })
+        .fail(function(err) {
+            throw err;
+        });
+
+    var guardianUrl = "https://accesscontrolalloworiginall.herokuapp.com/http://content.guardianapis.com/search?page-size=20&section=technology&show-fields=body%2Cthumbnail%2CtrailText&q=AI";
+    guardianUrl +=
+        "&" +
+        $.param({
+            "api-key": "651aec01-89ea-423c-89b9-2bfdde0a303e"
+        });
+
+    $.ajax({
+        url: guardianUrl,
+        method: "GET"
+    })
+        .done(function(result) {
+            var results = result.response.results;
+            results.forEach(function(article) {
+                var article = new Article(
+                    article.webTitle,
+                    article.sectionName,
+                    article.fields.thumbnail,
+                    article.fields.trailText,
+                    article.webUrl,
+                    article.webPublicationDate
+                );
+                guardianList.push(article);
+            });
+            console.log(guardianList);
+        })
+        .fail(function(err) {
+            throw err;
+        });
 });
