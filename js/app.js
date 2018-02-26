@@ -1,3 +1,54 @@
+function addArticle(){
+
+    var dom_article= document.createElement("ARTICLE");
+    dom_article.className ="article";
+
+    var dom_sectionImage = document.createElement("SECTION");
+    dom_sectionImage.className ="featuredImage";
+
+    var dom_img = document.createElement("img");
+    dom_img.src = "images/article_placeholder_1.jpg";
+
+    dom_sectionImage.appendChild(dom_img);
+
+    var dom_sectionTitle = document.createElement("SECTION");
+    dom_sectionTitle.className = "articleContent";
+
+    var dom_title = document.createElement("H3");
+    var title = document.createTextNode("Test article title");
+    dom_title.appendChild(title);
+    dom_sectionTitle.appendChild(dom_title);
+
+    var dom_type = document.createElement("H6");
+    var type = document.createTextNode("Lifestyle")
+    dom_type.appendChild(type);
+    dom_sectionTitle.appendChild(dom_type);
+
+    var clearfix = document.createElement("div");
+    clearfix.className = "clearfix";
+
+    dom_article.appendChild(dom_sectionImage);
+    dom_article.appendChild(dom_sectionTitle);
+    dom_article.appendChild(clearfix);
+
+    var src = document.getElementById("main") ;
+    src.appendChild(dom_article);
+}
+
+// <article class="article">
+//     <section class="featuredImage">
+//     <img src="images/article_placeholder_1.jpg" alt="" />
+//     </section>
+//     <section class="impressions">
+//     526
+//     </section>
+//     <section class="articleContent">
+//     <a href="#"><h3>Test article title</h3></a>
+// <h6>Lifestyle</h6>
+// </section>
+// <div class="clearfix"></div>
+//     </article>
+
 function Article(title, category, imageUrl, summary, url, date) {
     this.title = title;
     this.category = category;
@@ -11,6 +62,9 @@ var guardianList = [];
 var nytList = [];
 
 $(document).ready(function() {
+
+    addArticle();
+
     var url = "https://accesscontrolalloworiginall.herokuapp.com/https://api.nytimes.com/svc/search/v2/articlesearch.json";
     url +=
         "?" +
