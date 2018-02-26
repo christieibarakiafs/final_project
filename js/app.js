@@ -1,4 +1,4 @@
-function addArticle(){
+function addArticle(article){
 
     var dom_article= document.createElement("ARTICLE");
     dom_article.className ="article";
@@ -7,7 +7,7 @@ function addArticle(){
     dom_sectionImage.className ="featuredImage";
 
     var dom_img = document.createElement("img");
-    dom_img.src = "images/article_placeholder_1.jpg";
+    dom_img.src = article.imageUrl;
 
     dom_sectionImage.appendChild(dom_img);
 
@@ -15,12 +15,12 @@ function addArticle(){
     dom_sectionTitle.className = "articleContent";
 
     var dom_title = document.createElement("H3");
-    var title = document.createTextNode("Test article title");
+    var title = document.createTextNode(article.title);
     dom_title.appendChild(title);
     dom_sectionTitle.appendChild(dom_title);
 
     var dom_type = document.createElement("H6");
-    var type = document.createTextNode("Lifestyle")
+    var type = document.createTextNode(article.category);
     dom_type.appendChild(type);
     dom_sectionTitle.appendChild(dom_type);
 
@@ -58,12 +58,15 @@ function Article(title, category, imageUrl, summary, url, date) {
     this.date = date;
 }
 
+function getNytArticles(){
+    var result = [];
+}
+
 var guardianList = [];
 var nytList = [];
 
 $(document).ready(function() {
 
-    addArticle();
 
     var url = "https://accesscontrolalloworiginall.herokuapp.com/https://api.nytimes.com/svc/search/v2/articlesearch.json";
     url +=
@@ -83,15 +86,16 @@ $(document).ready(function() {
         .done(function(result) {
             var results = result.response.docs;
             results.forEach(function(article) {
+
                 var article = new Article(article.headline.main,
                     article.section_name,
-                    article.multimedia[2].url,
+                    "https://www.nytimes.com/" + article.multimedia[2].url,
                     article.snippet,
                     article.web_url,
                     article.pub_date);
                 nytList.push(article);
             });
-            console.log(nytList);
+
         })
         .fail(function(err) {
             throw err;
@@ -121,9 +125,14 @@ $(document).ready(function() {
                 );
                 guardianList.push(article);
             });
-            console.log(guardianList);
+            for(article in guardianList){
+                addArticle(guardianList[article]);
+            }
         })
         .fail(function(err) {
             throw err;
         });
+
+    console.log(guardianList[0]);
+
 });

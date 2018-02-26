@@ -59,6 +59,10 @@
   background: #fff;
 }
 
+body {
+    background-color: #323a4b;
+}
+
 /* Header styles */
 header {
   background-color: #1a1e27;
@@ -190,7 +194,9 @@ nav ul ul li {
 /* Individual Article Styling */
 .article {
   width: 70%;
-  border: 1px solid #ccc;
+    background-color: #fff;
+
+    border: 1px solid #ccc;
     border-radius: 10px;
 
     transition: 0.2s all;
@@ -219,27 +225,32 @@ nav ul ul li {
 }
 
 .article .articleContent {
-    margin-top: 50px;
+    margin-top: 5px;
     margin-left: 5px;
-
     width: 70%;
   float: left;
 }
 
 .article .articleContent a {
-  text-decoration: none;
+    margin-top: 5px;
+    text-decoration: none;
 }
 
 .article .articleContent h3 {
-  margin-bottom: 0;
-    margin-left: 5px;
+    margin-top: 0px;
+    margin-left: 0px;
+    margin-bottom: 0px;
+    text-align: left;
+
     color: #97464e;
 }
 
 .article .articleContent h6 {
-    margin-left: 5px;
-    margin-top: 0;
-  color: #666;
+    margin-top: 0px;
+    margin-left: 0px;
+    text-align: left;
+
+    color: #666;
 }
 
 .article .impressions {
