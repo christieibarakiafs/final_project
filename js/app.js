@@ -24,7 +24,6 @@ function addArticle(article){
     type.className = "type";
     dom_type.appendChild(type);
 
-
     dom_sectionImage.appendChild(dom_type);
 
     var clearfix = document.createElement("div");
@@ -70,17 +69,13 @@ function Article(title, byline, category, imageUrl, summary, url, date) {
     this.date = date;
 }
 
-function getNytArticles(){
-    var result = [];
-}
-
-var guardianList = [];
-var nytList = [];
-
-
-
-
 $(document).ready(function() {
+
+    var callsComplete = 0;
+
+    var guardianList = [];
+    var nytList = [];
+
 
     $(".closePopUp").on('click', function(){
         $("#popUp").attr('class', 'loader hidden');
@@ -104,6 +99,7 @@ $(document).ready(function() {
         method: "GET"
     })
         .done(function(result) {
+            callsComplete ++;
             var results = result.response.docs;
             results.forEach(function(article) {
 
@@ -115,16 +111,18 @@ $(document).ready(function() {
                     article.web_url,
                     article.pub_date);
                 nytList.push(article);
+                addArticle(article);
             });
 
-            for(article in nytList){
-                addArticle(nytList[article]);
+            if(callsComplete==2){
+                $("#popUp").attr('class', 'loader hidden');
             }
 
         })
         .fail(function(err) {
             throw err;
         });
+
 
 // <div id="popUp" class="loader hidden">
 //         <a href="#" class="closePopUp">X</a>
@@ -150,6 +148,7 @@ $(document).ready(function() {
         method: "GET"
     })
         .done(function(result) {
+            callsComplete ++;
             var results = result.response.results;
             results.forEach(function(article) {
                 var article = new Article(
@@ -162,10 +161,14 @@ $(document).ready(function() {
                     article.webPublicationDate
                 );
                 guardianList.push(article);
+                addArticle(article);
             });
 
-            for(article in guardianList){
-                addArticle(guardianList[article]);
+
+            if(callsComplete==2){
+                $("#popUp").attr('class', 'loader hidden');
+                $("#popUpCloser").attr('class', 'closePopUp');
+
             }
 
             $(".article").on('click', function(){
