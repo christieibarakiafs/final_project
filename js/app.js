@@ -121,36 +121,6 @@ $(document).ready(function() {
                 addArticle(nytList[article]);
             }
 
-            $(".article").on('click', function(){
-                //$("#popUp").attr('class', 'popUpAction');
-
-                var container = document.getElementById('popUp').getElementsByClassName('container')[0];
-                container.innerHTML = "";
-
-                var section = document.createElement("SECTION");
-                var title = document.createElement("H2");
-                var titleText = document.createTextNode(this.dataArticle.title);
-                title.appendChild(titleText);
-                section.appendChild(title);
-
-                var dom_img = document.createElement("img");
-                dom_img.src = this.dataArticle.imageUrl;
-                dom_img.className = "featuredImage";
-                section.appendChild(dom_img);
-
-                container.appendChild(section);
-
-                var snippetText = document.createTextNode(this.dataArticle.summary);
-                snippetText.className = "summary";
-                section.appendChild(snippetText);
-
-
-
-                $("#popUp").attr('class', 'popUpAction');
-
-            });
-
-
         })
         .fail(function(err) {
             throw err;
@@ -215,6 +185,11 @@ $(document).ready(function() {
                 author.appendChild(authorText);
                 section.appendChild(author);
 
+                var date = document.createTextNode(this.dataArticle.date);
+                date.className = "dateText";
+                section.appendChild(date);
+                section.appendChild(document.createElement("div"));
+
                 var dom_img = document.createElement("img");
                 dom_img.src = this.dataArticle.imageUrl;
                 dom_img.className = "featuredImage";
@@ -222,9 +197,19 @@ $(document).ready(function() {
 
                 container.appendChild(section);
 
+                var snippetPar = document.createElement("P");
                 var snippetText = document.createTextNode(this.dataArticle.summary);
                 snippetText.className = "summary";
-                section.appendChild(snippetText);
+                snippetPar.appendChild(snippetText);
+                section.appendChild(snippetPar);
+
+                var link= document.createElement('a');
+                link.setAttribute('class', 'popUpAction');
+                link.setAttribute('href', this.dataArticle.url);
+                link.setAttribute('target', '_blank');
+                var linkText = document.createTextNode("Read more from source");
+                link.appendChild(linkText);
+                section.appendChild(link);
 
 
 
