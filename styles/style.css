@@ -1,17 +1,18 @@
 /* General styles */
 .container {
-  max-width: 1000px;
+  max-width: 900px;
   margin: 0 auto;
     display: flex;
     flex-wrap: wrap;
+    margin-left: 140px;
 }
 
 #popUp {
   opacity: 0.95;
-  position: absolute;
+  position: fixed;
   top: 0;
-  left: 0;
-  width: 100%;
+  right: 0;
+  width: 40%;
   height: 100%;
   background:  #fff;
 }
@@ -37,10 +38,36 @@
 
 #popUp .container {
   margin-top: 80px;
+    width: 60%;
+
 }
 
 #popUp h1 {
-  margin-bottom: 0;
+     margin-bottom: 0;
+ }
+
+#popUp h2 {
+    margin-bottom: 0;
+}
+
+#popUp h3 {
+    margin-top: 0;
+    margin-bottom: 0;
+    color: #b9000f;
+}
+
+#popUp .summary {
+    font-size: 18px;
+}
+
+#popUp .featuredImage {
+    width: 100%;
+    float: left;
+    margin: 3.5%;
+    margin-top: 5px;
+    margin-left: 5px;
+    border-radius: 5px;
+
 }
 
 #popUp .popUpAction {
@@ -55,7 +82,7 @@
 }
 
 #popUp .popUpAction:hover {
-  color: #97464e;
+    color: #b9000f;
   background: #fff;
 }
 
@@ -90,7 +117,7 @@ header nav {
   line-height: 30px;
   margin-top: 0;
   position: relative;
-  vertical-align: middle;
+  vertical-align: left;
 }
 
 /* Search bar */
@@ -109,7 +136,7 @@ header #search a {
 }
 
 header #search a:hover {
-  background: #97464e;
+    color: #b9000f;
 }
 
 header #search img {
@@ -134,7 +161,7 @@ header #search.active input {
 }
 
 header #search.active a {
-  background: #97464e;
+    color: #b9000f;
 }
 
 header nav a {
@@ -148,8 +175,8 @@ header nav a {
 }
 
 header nav a:hover {
-  background-color: #fff;
-  color: #97464e;
+  background-color: #b6b6b6;
+    color: #b9000f;
 }
 
 nav ul {
@@ -158,12 +185,13 @@ nav ul {
   margin-right: 30px;
 	list-style: none;
 	position: relative;
-	}
+}
 
 nav ul li {
 	display:inline-block;
 	background-color: #3a373a;
   position: relative;
+
 }
 
 nav ul ul {
@@ -176,6 +204,8 @@ nav ul ul {
 /* Display Dropdowns on Hover */
 nav ul li:hover > ul {
 	display:inherit;
+
+
 }
 
 /* First Tier Dropdown */
@@ -189,11 +219,12 @@ nav ul ul li {
 /* Main Section */
 #main {
   margin-top: 65px;
+    margin-left: 80px;
 }
 
 /* Individual Article Styling */
 .article {
-  width: 70%;
+  width: 95%;
     background-color: #fff;
 
     border: 1px solid #ccc;
@@ -206,11 +237,11 @@ nav ul ul li {
 }
 
 .article:hover {
-  background-color: #eee;
+  background-color: #c7c7c7;
 }
 
 .article .featuredImage {
-  width: 70%;
+  width: 80%;
   float: left;
   margin: 1.5%;
   max-width: 70px;
@@ -227,7 +258,7 @@ nav ul ul li {
 .article .articleContent {
     margin-top: 5px;
     margin-left: 5px;
-    width: 70%;
+    width: 80%;
   float: left;
 }
 
@@ -242,7 +273,7 @@ nav ul ul li {
     margin-bottom: 0px;
     text-align: left;
 
-    color: #97464e;
+    color: #b9000f;
 }
 
 .article .featuredImage h5 {
@@ -257,7 +288,7 @@ nav ul ul li {
     margin-top: 0px;
     margin-left: 0px;
     text-align: left;
-    font-size: 12px;
+    font-size: 14px;
 
     color: #666;
 }

@@ -40,6 +40,8 @@ function addArticle(article){
     dom_article.appendChild(dom_sectionTitle);
     dom_article.appendChild(clearfix);
 
+    dom_article.dataArticle = article;
+
     var src = document.getElementById("main") ;
     src.appendChild(dom_article);
 }
@@ -58,8 +60,9 @@ function addArticle(article){
 // <div class="clearfix"></div>
 //     </article>
 
-function Article(title, category, imageUrl, summary, url, date) {
+function Article(title, byline, category, imageUrl, summary, url, date) {
     this.title = title;
+    this.byline = byline;
     this.category = category;
     this.imageUrl = imageUrl;
     this.summary = summary;
@@ -74,8 +77,15 @@ function getNytArticles(){
 var guardianList = [];
 var nytList = [];
 
+
+
+
 $(document).ready(function() {
 
+    $(".closePopUp").on('click', function(){
+        $("#popUp").attr('class', 'loader hidden');
+
+    });
 
     var url = "https://accesscontrolalloworiginall.herokuapp.com/https://api.nytimes.com/svc/search/v2/articlesearch.json";
     url +=
@@ -85,9 +95,10 @@ $(document).ready(function() {
             q: "artificial intelligence",
             begin_date: "20180101",
             fl:
-                "headline, web_url, snippet, abstract, source, pub_date, section_name, document_type, multimedia",
+                "headline, web_url, snippet, abstract, source, pub_date, section_name, document_type, byline, multimedia",
             facet_field: "section_name, document_type"
         });
+
     $.ajax({
         url: url,
         method: "GET"
@@ -97,8 +108,9 @@ $(document).ready(function() {
             results.forEach(function(article) {
 
                 var article = new Article(article.headline.main,
+                    "",
                     article.section_name,
-                    "https://www.nytimes.com/" + article.multimedia[2].url,
+                    "https://www.nytimes.com/" + article.multimedia[0].url,
                     article.snippet,
                     article.web_url,
                     article.pub_date);
@@ -109,12 +121,54 @@ $(document).ready(function() {
                 addArticle(nytList[article]);
             }
 
+            $(".article").on('click', function(){
+                //$("#popUp").attr('class', 'popUpAction');
+
+                var container = document.getElementById('popUp').getElementsByClassName('container')[0];
+                container.innerHTML = "";
+
+                var section = document.createElement("SECTION");
+                var title = document.createElement("H2");
+                var titleText = document.createTextNode(this.dataArticle.title);
+                title.appendChild(titleText);
+                section.appendChild(title);
+
+                var dom_img = document.createElement("img");
+                dom_img.src = this.dataArticle.imageUrl;
+                dom_img.className = "featuredImage";
+                section.appendChild(dom_img);
+
+                container.appendChild(section);
+
+                var snippetText = document.createTextNode(this.dataArticle.summary);
+                snippetText.className = "summary";
+                section.appendChild(snippetText);
+
+
+
+                $("#popUp").attr('class', 'popUpAction');
+
+            });
+
+
         })
         .fail(function(err) {
             throw err;
         });
 
-    var guardianUrl = "https://accesscontrolalloworiginall.herokuapp.com/http://content.guardianapis.com/search?page-size=20&section=technology&show-fields=body%2Cthumbnail%2CtrailText&q=AI";
+// <div id="popUp" class="loader hidden">
+//         <a href="#" class="closePopUp">X</a>
+//         <div class="container">
+//         <section>
+//         <h1>Article title here</h1>
+//     <p>Article description/content here.</p>
+//     <a href="#" class="popUpAction" target="_blank">Read more from source</a>
+//
+//     </section>
+//     </div>
+//     </div>
+
+    var guardianUrl = "https://accesscontrolalloworiginall.herokuapp.com/http://content.guardianapis.com/search?page-size=20&section=technology&show-fields=body%2Cbyline%2Cthumbnail%2CtrailText&q=AI";
     guardianUrl +=
         "&" +
         $.param({
@@ -130,6 +184,7 @@ $(document).ready(function() {
             results.forEach(function(article) {
                 var article = new Article(
                     article.webTitle,
+                    article.fields.byline,
                     article.sectionName,
                     article.fields.thumbnail,
                     article.fields.trailText,
@@ -138,14 +193,48 @@ $(document).ready(function() {
                 );
                 guardianList.push(article);
             });
+
             for(article in guardianList){
                 addArticle(guardianList[article]);
             }
+
+            $(".article").on('click', function(){
+                //$("#popUp").attr('class', 'popUpAction');
+
+                var container = document.getElementById('popUp').getElementsByClassName('container')[0];
+                container.innerHTML = "";
+
+                var section = document.createElement("SECTION");
+                var title = document.createElement("H2");
+                var titleText = document.createTextNode(this.dataArticle.title);
+                title.appendChild(titleText);
+                section.appendChild(title);
+
+                var author = document.createElement("H3");
+                var authorText = document.createTextNode(this.dataArticle.byline);
+                author.appendChild(authorText);
+                section.appendChild(author);
+
+                var dom_img = document.createElement("img");
+                dom_img.src = this.dataArticle.imageUrl;
+                dom_img.className = "featuredImage";
+                section.appendChild(dom_img);
+
+                container.appendChild(section);
+
+                var snippetText = document.createTextNode(this.dataArticle.summary);
+                snippetText.className = "summary";
+                section.appendChild(snippetText);
+
+
+
+                $("#popUp").attr('class', 'popUpAction');
+
+            });
         })
         .fail(function(err) {
             throw err;
         });
 
-    console.log(guardianList[0]);
 
 });
