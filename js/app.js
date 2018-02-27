@@ -1,16 +1,22 @@
-function addArticle(article){
 
-    var dom_article= document.createElement("ARTICLE");
-    dom_article.className ="article";
 
+// fucntion to add an article to the dom
+function addArticle(article) {
+
+    //create article
+    var dom_article = document.createElement("ARTICLE");
+    dom_article.className = "article";
+
+    // image
     var dom_sectionImage = document.createElement("SECTION");
-    dom_sectionImage.className ="featuredImage";
+    dom_sectionImage.className = "featuredImage";
 
     var dom_img = document.createElement("img");
     dom_img.src = article.imageUrl;
 
     dom_sectionImage.appendChild(dom_img);
 
+    // title
     var dom_sectionTitle = document.createElement("SECTION");
     dom_sectionTitle.className = "articleContent";
 
@@ -19,6 +25,7 @@ function addArticle(article){
     dom_title.appendChild(title);
     dom_sectionTitle.appendChild(dom_title);
 
+    // type (i.e. section)
     var dom_type = document.createElement("H5");
     var type = document.createTextNode(article.category);
     type.className = "type";
@@ -29,6 +36,7 @@ function addArticle(article){
     var clearfix = document.createElement("div");
     clearfix.className = "clearfix";
 
+    // snippet (abstract, summary)
     var dom_sectionSnippet = document.createElement("SECTION");
     dom_sectionSnippet.className = "snippet";
     var snippet = document.createTextNode(article.summary);
@@ -41,24 +49,11 @@ function addArticle(article){
 
     dom_article.dataArticle = article;
 
-    var src = document.getElementById("main") ;
+    var src = document.getElementById("main");
     src.appendChild(dom_article);
 }
 
-// <article class="article">
-//     <section class="featuredImage">
-//     <img src="images/article_placeholder_1.jpg" alt="" />
-//     </section>
-//     <section class="impressions">
-//     526
-//     </section>
-//     <section class="articleContent">
-//     <a href="#"><h3>Test article title</h3></a>
-// <h6>Lifestyle</h6>
-// </section>
-// <div class="clearfix"></div>
-//     </article>
-
+// an article class
 function Article(title, byline, category, imageUrl, summary, url, date) {
     this.title = title;
     this.byline = byline;
@@ -69,19 +64,15 @@ function Article(title, byline, category, imageUrl, summary, url, date) {
     this.date = date;
 }
 
-$(document).ready(function() {
+$(document).ready(function () {
 
     var callsComplete = 0;
 
     var guardianList = [];
     var nytList = [];
 
-
-    $(".closePopUp").on('click', function(){
-        $("#popUp").attr('class', 'loader hidden');
-
-    });
-
+    // AJAX Calls
+    // NYTIMES
     var url = "https://accesscontrolalloworiginall.herokuapp.com/https://api.nytimes.com/svc/search/v2/articlesearch.json";
     url +=
         "?" +
@@ -98,10 +89,10 @@ $(document).ready(function() {
         url: url,
         method: "GET"
     })
-        .done(function(result) {
-            callsComplete ++;
+        .done(function (result) {
+            callsComplete++;
             var results = result.response.docs;
-            results.forEach(function(article) {
+            results.forEach(function (article) {
 
                 var article = new Article(article.headline.main,
                     "",
@@ -111,16 +102,41 @@ $(document).ready(function() {
                     article.web_url,
                     article.pub_date);
                 nytList.push(article);
-                addArticle(article);
             });
 
-            if(callsComplete==2){
+            if (callsComplete == 2) {
+
+                for (var article in nytList) {
+                    addArticle(nytList[article]);
+                }
+
+                for (var article in guardianList) {
+                    addArticle(guardianList[article]);
+                }
+
                 $("#popUp").attr('class', 'loader hidden');
+                $("#popUpCloser").attr('class', 'closePopUp');
             }
 
         })
-        .fail(function(err) {
-            throw err;
+        .fail(function (err) {
+            alert("Could not load NYT feed.")
+            callsComplete++;
+
+            if (callsComplete == 2) {
+
+                for (var article in nytList) {
+                    addArticle(nytList[article]);
+                }
+
+                for (var article in guardianList) {
+                    addArticle(guardianList[article]);
+                }
+
+                $("#popUp").attr('class', 'loader hidden');
+                $("#popUpCloser").attr('class', 'closePopUp');
+            }
+
         });
 
 
@@ -136,6 +152,7 @@ $(document).ready(function() {
 //     </div>
 //     </div>
 
+    // THE GUARDIAN
     var guardianUrl = "https://accesscontrolalloworiginall.herokuapp.com/http://content.guardianapis.com/search?page-size=20&section=technology&show-fields=body%2Cbyline%2Cthumbnail%2CtrailText&q=AI";
     guardianUrl +=
         "&" +
@@ -147,10 +164,10 @@ $(document).ready(function() {
         url: guardianUrl,
         method: "GET"
     })
-        .done(function(result) {
-            callsComplete ++;
+        .done(function (result) {
+            callsComplete++;
             var results = result.response.results;
-            results.forEach(function(article) {
+            results.forEach(function (article) {
                 var article = new Article(
                     article.webTitle,
                     article.fields.byline,
@@ -161,68 +178,84 @@ $(document).ready(function() {
                     article.webPublicationDate
                 );
                 guardianList.push(article);
-                addArticle(article);
             });
 
 
-            if(callsComplete==2){
+            if (callsComplete == 2) {
+
+                for (var article in nytList) {
+                    addArticle(nytList[article]);
+                }
+
+                for (var article in guardianList) {
+                    addArticle(guardianList[article]);
+                }
+
                 $("#popUp").attr('class', 'loader hidden');
                 $("#popUpCloser").attr('class', 'closePopUp');
 
             }
-
-            $(".article").on('click', function(){
-                //$("#popUp").attr('class', 'popUpAction');
-
-                var container = document.getElementById('popUp').getElementsByClassName('container')[0];
-                container.innerHTML = "";
-
-                var section = document.createElement("SECTION");
-                var title = document.createElement("H2");
-                var titleText = document.createTextNode(this.dataArticle.title);
-                title.appendChild(titleText);
-                section.appendChild(title);
-
-                var author = document.createElement("H3");
-                var authorText = document.createTextNode(this.dataArticle.byline);
-                author.appendChild(authorText);
-                section.appendChild(author);
-
-                var date = document.createTextNode(this.dataArticle.date);
-                date.className = "dateText";
-                section.appendChild(date);
-                section.appendChild(document.createElement("div"));
-
-                var dom_img = document.createElement("img");
-                dom_img.src = this.dataArticle.imageUrl;
-                dom_img.className = "featuredImage";
-                section.appendChild(dom_img);
-
-                container.appendChild(section);
-
-                var snippetPar = document.createElement("P");
-                var snippetText = document.createTextNode(this.dataArticle.summary);
-                snippetText.className = "summary";
-                snippetPar.appendChild(snippetText);
-                section.appendChild(snippetPar);
-
-                var link= document.createElement('a');
-                link.setAttribute('class', 'popUpAction');
-                link.setAttribute('href', this.dataArticle.url);
-                link.setAttribute('target', '_blank');
-                var linkText = document.createTextNode("Read more from source");
-                link.appendChild(linkText);
-                section.appendChild(link);
-
-
-
-                $("#popUp").attr('class', 'popUpAction');
-
-            });
         })
-        .fail(function(err) {
-            throw err;
+        .fail(function (err) {
+            alert("Could not load Guardian feed.")
+            callsComplete++;
         });
+
+
+    // dom functions
+
+    $(".closePopUp").on('click', function () {
+        $("#popUp").attr('class', 'loader hidden');
+
+    });
+
+    $("#main").on('click', '.article', function () {
+        //$("#popUp").attr('class', 'popUpAction');
+
+        var container = document.getElementById('popUp').getElementsByClassName('container')[0];
+        container.innerHTML = "";
+
+        var section = document.createElement("SECTION");
+        var title = document.createElement("H2");
+        var titleText = document.createTextNode(this.dataArticle.title);
+        title.appendChild(titleText);
+        section.appendChild(title);
+
+        var author = document.createElement("H3");
+        var authorText = document.createTextNode(this.dataArticle.byline);
+        author.appendChild(authorText);
+        section.appendChild(author);
+
+        var date = document.createTextNode(this.dataArticle.date);
+        date.className = "dateText";
+        section.appendChild(date);
+        section.appendChild(document.createElement("div"));
+
+        var dom_img = document.createElement("img");
+        dom_img.src = this.dataArticle.imageUrl;
+        dom_img.className = "featuredImage";
+        section.appendChild(dom_img);
+
+        container.appendChild(section);
+
+        var snippetPar = document.createElement("P");
+        var snippetText = document.createTextNode(this.dataArticle.summary);
+        snippetText.className = "summary";
+        snippetPar.appendChild(snippetText);
+        section.appendChild(snippetPar);
+
+        var link = document.createElement('a');
+        link.setAttribute('class', 'popUpAction');
+        link.setAttribute('href', this.dataArticle.url);
+        link.setAttribute('target', '_blank');
+        var linkText = document.createTextNode("Read more from source");
+        link.appendChild(linkText);
+        section.appendChild(link);
+
+
+        $("#popUp").attr('class', 'popUpAction');
+
+    })
 
 
 });
