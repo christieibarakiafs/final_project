@@ -1,6 +1,6 @@
 # final project
 
-## Simple text analsis tool
+## Simple text analysis tool
 Current data: sci fi plot overviews from 1960-2018
 - Token + Entity extraction and frequency (https://github.com/cibarakiAFS/text_analysis)
 - Geocoding + mapping NER locations, visualized in d3 
