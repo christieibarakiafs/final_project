@@ -28,7 +28,9 @@ for(var movieIndex=700 ; movieIndex < 1300; movieIndex++){
     movieTitle.appendChild(titleText);
     dom_article.appendChild(movieTitle);
 
-    var textNode = document.createTextNode(movieData[movieIndex].overview);
+    var textNode = document.createElement("p");
+    textNode.className = "overview";
+    textNode.innerHTML = movieData[movieIndex].overview;
     dom_article.appendChild(textNode);
 
     var src = document.getElementsByClassName("data")[0];
@@ -52,26 +54,16 @@ $(".data").on('click', '.movie', function () {
     if(this.movie.genres !== undefined){
         var genreList = this.movie.genres;
         for(var genreIndex in genreList){
+
+            if(genres!==""){
+                genres = genres + " / ";
+            }
             genres = genres + genreList[genreIndex] + " ";
         }
     }
 
     genres = genres + " , " + this.movie.releaseDate.substring(0,4);
 
-
-    // "personSet": [
-    //     "KRETON",
-    //     "JERRY LEWIS",
-    //     "ALESSIO QUIRINO"
-    // ],
-    //     "organizationSet": [
-    //     "U.F.O"
-    // ],
-    //     "locationSet": [
-    //     {
-    //         "name": "EARTH"
-    //     }
-    // ]
 
     var entityString = "";
     if(this.movie.locationSet !== undefined) {
@@ -126,7 +118,15 @@ $(".data").on('click', '.movie', function () {
     var title = document.createElement("h1");
     title.className = "content-detail";
     title.appendChild(document.createTextNode(this.movie.title));
+
+    var genreSection = document.createElement("SECTION");
+    genreSection.className  ="genre";
+    var testGenres = document.createElement("h4");
+    testGenres.innerHTML = genres;
+    genreSection.appendChild(testGenres);
+
     container.appendChild(title);
+    container.appendChild(genreSection);
 
     var dom_sectionImage = document.createElement("SECTION");
     dom_sectionImage.className = "bigImage";
@@ -143,11 +143,7 @@ $(".data").on('click', '.movie', function () {
     testText.innerHTML = this.movie.overview;
     textSection.appendChild(testText);
 
-    var genreSection = document.createElement("SECTION");
-    genreSection.className  ="genre";
-    var testGenres = document.createElement("h5");
-    testGenres.innerHTML = genres;
-    genreSection.appendChild(testGenres);
+
 
     // entities
     var entitySection = document.createElement("SECTION");
@@ -166,7 +162,7 @@ $(".data").on('click', '.movie', function () {
     entitySection.appendChild(entityText);
 
     container.appendChild(textSection);
-    container.appendChild(genreSection);
+    //container.appendChild(genreSection);
     container.appendChild(entitySection);
 
 
