@@ -1,349 +1,360 @@
-// function to add an article to main
-function addArticle(article) {
+var movieData = data.movieList;
+
+for(var movieIndex=700 ; movieIndex < 1300; movieIndex++){
 
     // create article
     var dom_article = document.createElement("ARTICLE");
-    dom_article.className = "article";
+    dom_article.className = "movie";
 
-    // assign img url from article
     var dom_sectionImage = document.createElement("SECTION");
     dom_sectionImage.className = "featuredImage";
 
     var dom_img = document.createElement("img");
-    dom_img.src = article.imageUrl;
+    dom_img.src = 'https://image.tmdb.org/t/p/w1280/' + movieData[movieIndex].posterUrl;
 
     dom_sectionImage.appendChild(dom_img);
 
-    // assign article title
-    var dom_sectionTitle = document.createElement("SECTION");
-    dom_sectionTitle.className = "articleContent";
-
-    var dom_title = document.createElement("H3");
-    var title = document.createTextNode(article.title);
-    dom_title.appendChild(title);
-    dom_sectionTitle.appendChild(dom_title);
-
-    // assign article type (i.e. section)
-    var dom_type = document.createElement("H5");
-    var type = document.createTextNode(article.category);
-    type.className = "type";
-    dom_type.appendChild(type);
-
-    dom_sectionImage.appendChild(dom_type);
-
-    var clearfix = document.createElement("div");
-    clearfix.className = "clearfix";
-
-    // assign article snippet (abstract, summary)
-    var dom_sectionSnippet = document.createElement("SECTION");
-    dom_sectionSnippet.className = "snippet";
-    //var snippet = document.createTextNode(article.summary);
-    dom_sectionSnippet.innerHTML = article.summary;
-    dom_sectionTitle.appendChild(dom_sectionSnippet);
+    var movieYear = document.createElement("h4");
+    var year = movieData[movieIndex].releaseDate === undefined? "" : movieData[movieIndex].releaseDate.substring(0,4);
+    var yearText = document.createTextNode(year);
+    yearText.className = "year";
+    movieYear.appendChild(yearText);
+    dom_sectionImage.appendChild(movieYear);
 
     dom_article.appendChild(dom_sectionImage);
-    dom_article.appendChild(dom_sectionTitle);
-    dom_article.appendChild(clearfix);
 
-    dom_article.dataArticle = article;
+    var movieTitle = document.createElement("h3");
+    var titleText = document.createTextNode(movieData[movieIndex].title);
+    movieTitle.appendChild(titleText);
+    dom_article.appendChild(movieTitle);
 
-    // add article to main
-    var src = document.getElementById("main");
+    var textNode = document.createTextNode(movieData[movieIndex].overview);
+    dom_article.appendChild(textNode);
+
+    var src = document.getElementsByClassName("data")[0];
+    dom_article.movie = movieData[movieIndex];
     src.appendChild(dom_article);
+
 }
 
-// add click events to articles
-// on click display content in pop up
-$("#main").on('click', '.article', function () {
+$("#closeDetail").on('click', function () {
+    console.log('byee');
+    $("#movieDetail").hide();
 
-    // get the popup container and clear it
-    var container = document.getElementById('popUp').getElementsByClassName('container')[0];
+});
+
+
+$(".data").on('click', '.movie', function () {
+
+    $("#movieDetail").show();
+
+    var genres = "";
+    if(this.movie.genres !== undefined){
+        var genreList = this.movie.genres;
+        for(var genreIndex in genreList){
+            genres = genres + genreList[genreIndex] + " ";
+        }
+    }
+
+    genres = genres + " , " + this.movie.releaseDate.substring(0,4);
+
+
+    // "personSet": [
+    //     "KRETON",
+    //     "JERRY LEWIS",
+    //     "ALESSIO QUIRINO"
+    // ],
+    //     "organizationSet": [
+    //     "U.F.O"
+    // ],
+    //     "locationSet": [
+    //     {
+    //         "name": "EARTH"
+    //     }
+    // ]
+
+    var entityString = "";
+    if(this.movie.locationSet !== undefined) {
+        var locationSet = this.movie.locationSet;
+        for(var locationIndex in locationSet){
+            if(entityString!==""){
+                entityString = entityString + ", ";
+            }else{
+                entityString = "Places: ";
+            }
+            entityString = entityString + locationSet[locationIndex].name;
+        }
+    }
+
+    var peopleString = "";
+    if(this.movie.personSet !== undefined) {
+        var personSet = this.movie.personSet;
+        for(var personIndex in personSet){
+
+
+            if(peopleString!==""){
+                peopleString = peopleString + ", ";
+            }else{
+                peopleString = "People: ";
+            }
+            peopleString = peopleString + personSet[personIndex];
+        }
+    }
+
+    var orgString = "";
+    if(this.movie.organizationSet !== undefined) {
+        var orgSet = this.movie.organizationSet;
+        for(var orgIndex in orgSet){
+
+
+            if(orgString!==""){
+                orgString = orgString + ", ";
+            }else{
+                orgString = "Organizations: ";
+            }
+            orgString = orgString + orgSet[orgIndex];
+        }
+    }
+
+
+
+
+
+    var container = document.getElementById('content');
     container.innerHTML = "";
 
-    // add the content from the clicked article
-    // title
-    var section = document.createElement("SECTION");
-    var title = document.createElement("H2");
-    var titleText = document.createTextNode(this.dataArticle.title);
-    title.appendChild(titleText);
-    section.appendChild(title);
+    var title = document.createElement("h1");
+    title.className = "content-detail";
+    title.appendChild(document.createTextNode(this.movie.title));
+    container.appendChild(title);
 
-    // author
-    var author = document.createElement("H3");
-    var authorText = document.createTextNode(this.dataArticle.byline);
-    author.appendChild(authorText);
-    section.appendChild(author);
+    var dom_sectionImage = document.createElement("SECTION");
+    dom_sectionImage.className = "bigImage";
 
-    //d ate
-    var date = document.createTextNode(this.dataArticle.date);
-    date.className = "dateText";
-    section.appendChild(date);
-    section.appendChild(document.createElement("div"));
-
-    // image
     var dom_img = document.createElement("img");
-    dom_img.src = this.dataArticle.imageUrl;
-    dom_img.className = "featuredImage";
-    section.appendChild(dom_img);
+    dom_img.src = 'https://image.tmdb.org/t/p/w1280/' + this.movie.posterUrl;
 
-    container.appendChild(section);
+    dom_sectionImage.appendChild(dom_img);
+    container.appendChild(dom_sectionImage);
 
-    // summary/abstract
-    var snippetPar = document.createElement("P");
-    snippetPar.className = "summary";
-    snippetPar.innerHTML = this.dataArticle.summary;
-    section.appendChild(snippetPar);
+    var textSection = document.createElement("SECTION");
+    textSection.className = "text";
+    var testText = document.createElement("p");
+    testText.innerHTML = this.movie.overview;
+    textSection.appendChild(testText);
 
-    // button to view original article in new tab
-    var link = document.createElement('a');
-    link.setAttribute('class', 'popUpAction');
-    link.setAttribute('href', this.dataArticle.url);
-    link.setAttribute('target', '_blank');
-    var linkText = document.createTextNode("Read more from source");
-    link.appendChild(linkText);
-    section.appendChild(link);
+    var genreSection = document.createElement("SECTION");
+    genreSection.className  ="genre";
+    var testGenres = document.createElement("h5");
+    testGenres.innerHTML = genres;
+    genreSection.appendChild(testGenres);
 
-    $("#popUp").attr('class', 'popUpAction');
+    // entities
+    var entitySection = document.createElement("SECTION");
+    entitySection.className = "entities";
 
-})
+    var peopleText = document.createElement("h2");
+    peopleText.innerHTML = peopleString;
+    entitySection.appendChild(peopleText);
 
-// an article class
-function Article(title, byline, category, imageUrl, summary, url, date) {
-    this.title = title;
-    this.byline = byline;
-    this.category = category;
-    this.imageUrl = imageUrl;
-    this.summary = summary;
-    this.url = url;
-    this.date = date;
-}
+    var orgText = document.createElement("h2");
+    orgText.innerHTML = orgString;
+    entitySection.appendChild(orgText);
 
-// return today's date as YYYYMMDD
-function getToday() {
+    var entityText = document.createElement("h2");
+    entityText.innerHTML = entityString;
+    entitySection.appendChild(entityText);
 
-    var today = new Date();
-    var dd = today.getDate();
-    var mm = today.getMonth() + 1; //Jan is 0
-    var yyyy = today.getFullYear();
+    container.appendChild(textSection);
+    container.appendChild(genreSection);
+    container.appendChild(entitySection);
 
-    // add zeros to support mmdd format
-    if (dd < 10) {
-        dd = '0' + dd
+
+    //
+    // // add the content from the clicked article
+    // // title
+    // var section = document.createElement("SECTION");
+    // var title = document.createElement("H2");
+    // var titleText = document.createTextNode(this.dataArticle.title);
+    // title.appendChild(titleText);
+    // section.appendChild(title);
+    //
+    // // author
+    // var author = document.createElement("H3");
+    // var authorText = document.createTextNode(this.dataArticle.byline);
+    // author.appendChild(authorText);
+    // section.appendChild(author);
+    //
+    // //d ate
+    // var date = document.createTextNode(this.dataArticle.date);
+    // date.className = "dateText";
+    // section.appendChild(date);
+    // section.appendChild(document.createElement("div"));
+    //
+    // // image
+    // var dom_img = document.createElement("img");
+    // dom_img.src = this.dataArticle.imageUrl;
+    // dom_img.className = "featuredImage";
+    // section.appendChild(dom_img);
+    //
+    // container.appendChild(section);
+    //
+    // // summary/abstract
+    // var snippetPar = document.createElement("P");
+    // snippetPar.className = "summary";
+    // snippetPar.innerHTML = this.dataArticle.summary;
+    // section.appendChild(snippetPar);
+    //
+    // // button to view original article in new tab
+    // var link = document.createElement('a');
+    // link.setAttribute('class', 'popUpAction');
+    // link.setAttribute('href', this.dataArticle.url);
+    // link.setAttribute('target', '_blank');
+    // var linkText = document.createTextNode("Read more from source");
+    // link.appendChild(linkText);
+    // section.appendChild(link);
+    //
+    // $("#popUp").attr('class', 'popUpAction');
+
+});
+
+
+movieData.forEach(function(d){
+
+
+    var title  = "'" + d.title + "'";
+
+
+    if(d.locationSet !== undefined) {
+        var locationSet = d.locationSet;
+        if(locationSet[0].coords !== undefined) {
+
+            d["geo"] = locationSet[0].coords.x + "," + locationSet[0].coords.y + "," + locationSet[0].name;
+
+        }
     }
 
-    if (mm < 10) {
-        mm = '0' + mm
-    }
 
-    return (yyyy + mm + dd);
-}
-
+});
 
 $(document).ready(function () {
 
-    // helper functions for adding articles to main
-    function loadArticles(nytBoolean, guardianBoolean) {
+    var ndx = crossfilter(movieData);
 
-        document.getElementById("main").innerHTML = "";
-        if (nytBoolean) {
-            for (var article in nytList) {
-                addArticle(nytList[article]);
-            }
-        }
-
-        if (guardianBoolean) {
-            for (var article in guardianList) {
-                addArticle(guardianList[article]);
-            }
-        }
-
-    }
-
-    // if click feeder button, show articles from all sources
-    document.getElementById("feederButton").addEventListener("click", function () {
-
-        document.getElementById("all").className = "hidden";
-        document.getElementById("nytSource").className = "";
-        document.getElementById("guardianSource").className = "";
-        document.getElementById("currentSource").innerHTML = "News Source:<span> All</span>";
-
-        loadArticles(true, true);
+    var mapGeo = ndx.dimension(function(d){
+        return d.geo;
     });
+    var mapGeoGroup = mapGeo.group().reduceCount();
 
-    // when user clicks source, update main to show that source
-    // update source value to selected/current source
-    // hide current source from drop down
-    document.getElementById("sourceList").addEventListener("click", function (e) {
-
-        if (e.target.id == "nytSource") {
-
-            e.target.className = "hidden";
-            document.getElementById("guardianSource").className = "";
-            document.getElementById("all").className = "";
-            document.getElementById("currentSource").innerHTML = "News Source:<span> The New York Times</span>";
-
-            loadArticles(true, false);
-
-        } else if (e.target.id == "guardianSource") {
-
-            e.target.className = "hidden";
-            document.getElementById("nytSource").className = "";
-            document.getElementById("all").className = "";
-            document.getElementById("currentSource").innerHTML = "News Source:<span> The Guardian</span>";
-
-            loadArticles(false, true);
-
-
-        } else if (e.target.id == "all") {
-
-
-            e.target.className = "hidden";
-            document.getElementById("nytSource").className = "";
-            document.getElementById("guardianSource").className = "";
-            document.getElementById("currentSource").innerHTML = "News Source:<span> All</span>";
-
-            loadArticles(true, true);
-
-        }
-
-    });
-
-    // function to load source articles to main for the first time
-    // hide loader in pop up and unhide close pop up x
-    function loadArticlesIntoMainInitial() {
-
-        if (callsComplete == totalCalls) {
-            loadArticles(true, true);
-
-            $("#popUp").attr('class', 'loader hidden');
-            $("#popUpCloser").attr('class', 'closePopUp');
-        }
-    }
-
-
-    // when close pop up x is clicked, hide the pop up
-    $(".closePopUp").on('click', function () {
-        $("#popUp").attr('class', 'loader hidden');
-
-    });
-
-    // variable to keep track of whether ajax calls finished (done or error)
-    var callsComplete = 0;
-    var totalCalls = 2;
-
-    // lists to hold results from initial call
-    var guardianList = [];
-    var nytList = [];
-
-
-    //////////////////////// AJAX Calls
-    // NYTIMES, search term = "artificial intelligence"
-    var url = "https://accesscontrolalloworiginall.herokuapp.com/https://api.nytimes.com/svc/search/v2/articlesearch.json";
-    url +=
-        "?" +
-        $.param({
-            "api-key": "1b5c0536a9cf49be87c49d7cc0e140c3",
-            q: "artificial intelligence",
-            begin_date: getToday(),
-            sort: "newest",
-            fl:
-                "headline, web_url, snippet, abstract, source, pub_date, section_name, document_type, byline, multimedia",
-            facet_field: "section_name, document_type"
-        });
-
-    $.ajax({
-        url: url,
-        method: "GET"
-    })
-        .done(function (result) {
-
-            // increment complete calls counter
-            // create article objects from results; add to nyt article list
-            callsComplete++;
-            var results = result.response.docs;
-            results.forEach(function (article) {
-
-
-                try {
-                    var article = new Article(article.headline.main,
-                        "",
-                        article.section_name,
-                        "https://www.nytimes.com/" + article.multimedia[0].url,
-                        article.snippet,
-                        article.web_url,
-                        article.pub_date);
-                    nytList.push(article);
-                }
-                catch (err) {
-                    // do nothing
-                }
-            });
-
-            // load articles into main if all ajax calls completed/errored out
-            loadArticlesIntoMainInitial();
-
-
+    var markerMap = dc.leafletMarkerChart("#marker-map")
+        .dimension(mapGeo)
+        .group(mapGeoGroup)
+        .width(500)
+        .height(300)
+        .fitOnRender(true)
+        .fitOnRedraw(true)
+        .popupOnHover(true)
+        .popup(function (d){
+            return d.key.split(',')[2];
         })
-        .fail(function (err) {
-
-            // alert if call failed
-            // increment call complete counter, load articles into main if all ajax calls completed/errored out
-            alert("Could not load NYT feed.")
-            callsComplete++;
-            loadArticlesIntoMainInitial();
-
-        });
+        .cluster(true);
 
 
-    // THE GUARDIAN, search = "AI"
-    var guardianUrl = "https://accesscontrolalloworiginall.herokuapp.com/http://content.guardianapis.com/search?page-size=30&section=technology&show-fields=body%2Cbyline%2Cthumbnail%2CtrailText&q=AI&order-by=newest";
-    guardianUrl +=
-        "&" +
-        $.param({
-            "api-key": "651aec01-89ea-423c-89b9-2bfdde0a303e"
-        });
 
-    $.ajax({
-        url: guardianUrl,
-        method: "GET"
-    })
-        .done(function (result) {
 
-            // increment complete calls counter
-            // create article objects from results; add to guardian article list
-            callsComplete++;
-            var results = result.response.results;
-            results.forEach(function (article) {
 
-                try {
-                    var article = new Article(
-                        article.webTitle,
-                        article.fields.byline,
-                        article.sectionName,
-                        article.fields.thumbnail,
-                        article.fields.trailText,
-                        article.webUrl,
-                        article.webPublicationDate
-                    );
-                    guardianList.push(article);
-                }
-                catch (err) {
-                    // do nothing
-                }
-            });
+    dc.renderAll();
 
-            // load articles into main if all ajax calls completed/errored out
-            loadArticlesIntoMainInitial();
+    // InitChart();
+    //
+    // function InitChart() {
+    //
+    //     console.log("init chart");
+    //     var barData = [{
+    //         'x': 1,
+    //         'y': 5
+    //     }, {
+    //         'x': 20,
+    //         'y': 20
+    //     }, {
+    //         'x': 40,
+    //         'y': 10
+    //     }, {
+    //         'x': 60,
+    //         'y': 40
+    //     }, {
+    //         'x': 80,
+    //         'y': 5
+    //     }, {
+    //         'x': 100,
+    //         'y': 60
+    //     }];
+    //
+    //     var vis = d3.select('#visualisation'),
+    //         WIDTH = 1000,
+    //         HEIGHT = 500,
+    //         MARGINS = {
+    //             top: 20,
+    //             right: 20,
+    //             bottom: 20,
+    //             left: 50
+    //         },
+    //         xRange = d3.scale.ordinal().rangeRoundBands([MARGINS.left, WIDTH - MARGINS.right], 0.1).domain(barData.map(function (d) {
+    //             return d.x;
+    //         })),
+    //
+    //
+    //         yRange = d3.scale.linear().range([HEIGHT - MARGINS.top, MARGINS.bottom]).domain([0,
+    //             d3.max(barData, function (d) {
+    //                 return d.y;
+    //             })
+    //         ]),
+    //
+    //         xAxis = d3.svg.axis()
+    //             .scale(xRange)
+    //             .tickSize(5)
+    //             .tickSubdivide(true),
+    //
+    //         yAxis = d3.svg.axis()
+    //             .scale(yRange)
+    //             .tickSize(5)
+    //             .orient("left")
+    //             .tickSubdivide(true);
+    //
+    //
+    //     vis.append('svg:g')
+    //         .attr('class', 'x axis')
+    //         .attr('transform', 'translate(0,' + (HEIGHT - MARGINS.bottom) + ')')
+    //         .call(xAxis);
+    //
+    //     vis.append('svg:g')
+    //         .attr('class', 'y axis')
+    //         .attr('transform', 'translate(' + (MARGINS.left) + ',0)')
+    //         .call(yAxis);
+    //
+    //     vis.selectAll('rect')
+    //         .data(barData)
+    //         .enter()
+    //         .append('rect')
+    //         .attr('x', function (d) {
+    //             return xRange(d.x);
+    //         })
+    //         .attr('y', function (d) {
+    //             return yRange(d.y);
+    //         })
+    //         .attr('width', xRange.rangeBand())
+    //         .attr('height', function (d) {
+    //             return ((HEIGHT - MARGINS.bottom) - yRange(d.y));
+    //         })
+    //         .attr('fill', 'grey')
+    //         .on('mouseover',function(d){
+    //             d3.select(this)
+    //                 .attr('fill', '#4424D6' );
+    //         })
+    //         .on('mouseout',function(d){
+    //             d3.select(this)
+    //                 .attr('fill','grey');
+    //         });
 
-        })
-        .fail(function (err) {
-
-            // alert if call failed
-            // increment call complete counter, load articles into main if all ajax calls completed/errored out
-            alert("Could not load Guardian feed.")
-            callsComplete++;
-            loadArticlesIntoMainInitial();
-
-        });
 
 });
