@@ -15,4 +15,4 @@ Current data: sci fi plot overviews from 1960-2018
 - Code needs to be refactored
 - ........
 
-![alt text](https://github.com/cibarakiAFS/final_project/blob/master/Screen Shot 2018-03-16 at 3.39.29 PM.png)
+![alt text](https://github.com/cibarakiAFS/final_project/blob/master/Screen%20Shot%202018-03-16%20at%203.39.29%20PM.png)
