@@ -7,7 +7,8 @@ Current data: sci fi plot overviews from 1960-2018
 
 ## Known issues/to-do
 - Data: static data set (api call made in java code, user can't change data set)
-- Add data filters (leftmost column)
+- Data loading issues... Need to figure out how to efficiently load photos. 
+- Add data filters + sort (leftmost column). 
 - Map dependencies work on local but not working on github
 - Data points on map not connected to obects in middle column
 - Should show additional corpus level analysis
