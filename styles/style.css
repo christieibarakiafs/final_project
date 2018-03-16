@@ -190,8 +190,6 @@ body {
     background: #fff;
     z-index: 1000;
     border-radius: 15px;
-    overflow-y: scroll;
-    overflow-x: hidden;
 }
 
 .close {
@@ -220,11 +218,29 @@ body {
     font-family: 'Audiowide', cursive;
 }
 
+.content-detail .genre {
+    color: #91000b;
+    margin-top: -25px;
+    padding: 5px;;
+    margin-left: -5px;
+
+}
+
+
+.content-detail .contentHolder {
+    background-color: whitesmoke;
+    min-height: 420px;
+    max-height: 420px;
+    border-radius: 5px;
+    overflow-y: scroll;
+    overflow-x: hidden;
+}
+
 .content-detail .bigImage img {
     width: 40%;
     float: right;
     margin: 1.5%;
-    margin-top: 2px;
+    margin-top: 20px;
     margin-left: 20px;
     margin-right: 5px;
     border-radius: 5px;
@@ -234,26 +250,15 @@ body {
 .content-detail .text {
     color: #5c5c60;
     font-size: 20px;
-    background-color: whitesmoke;
     padding: 5px;
     margin-top: -20px;
 }
 
-.content-detail .genre {
-    color: #91000b;
-    margin-top: -25px;
-    padding: 5px;;
-    margin-left: -5px;
-
-}
 
 .content-detail .entities {
     color: #91000b;
     margin-top: 0px;
-    background-color: whitesmoke;
     padding: 5px;
-    height: 200px;
-
 }
 
 /* Responsive layout - when the screen is less than 700px wide, make the two columns stack on top of each other instead of next to each other */

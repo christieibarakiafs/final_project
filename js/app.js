@@ -128,6 +128,9 @@ $(".data").on('click', '.movie', function () {
     container.appendChild(title);
     container.appendChild(genreSection);
 
+    var contentHolder = document.createElement("SECTION");
+    contentHolder.className = "contentHolder";
+
     var dom_sectionImage = document.createElement("SECTION");
     dom_sectionImage.className = "bigImage";
 
@@ -135,15 +138,13 @@ $(".data").on('click', '.movie', function () {
     dom_img.src = 'https://image.tmdb.org/t/p/w1280/' + this.movie.posterUrl;
 
     dom_sectionImage.appendChild(dom_img);
-    container.appendChild(dom_sectionImage);
+    contentHolder.appendChild(dom_sectionImage);
 
     var textSection = document.createElement("SECTION");
     textSection.className = "text";
     var testText = document.createElement("p");
     testText.innerHTML = this.movie.overview;
     textSection.appendChild(testText);
-
-
 
     // entities
     var entitySection = document.createElement("SECTION");
@@ -161,56 +162,9 @@ $(".data").on('click', '.movie', function () {
     entityText.innerHTML = entityString;
     entitySection.appendChild(entityText);
 
-    container.appendChild(textSection);
-    //container.appendChild(genreSection);
-    container.appendChild(entitySection);
-
-
-    //
-    // // add the content from the clicked article
-    // // title
-    // var section = document.createElement("SECTION");
-    // var title = document.createElement("H2");
-    // var titleText = document.createTextNode(this.dataArticle.title);
-    // title.appendChild(titleText);
-    // section.appendChild(title);
-    //
-    // // author
-    // var author = document.createElement("H3");
-    // var authorText = document.createTextNode(this.dataArticle.byline);
-    // author.appendChild(authorText);
-    // section.appendChild(author);
-    //
-    // //d ate
-    // var date = document.createTextNode(this.dataArticle.date);
-    // date.className = "dateText";
-    // section.appendChild(date);
-    // section.appendChild(document.createElement("div"));
-    //
-    // // image
-    // var dom_img = document.createElement("img");
-    // dom_img.src = this.dataArticle.imageUrl;
-    // dom_img.className = "featuredImage";
-    // section.appendChild(dom_img);
-    //
-    // container.appendChild(section);
-    //
-    // // summary/abstract
-    // var snippetPar = document.createElement("P");
-    // snippetPar.className = "summary";
-    // snippetPar.innerHTML = this.dataArticle.summary;
-    // section.appendChild(snippetPar);
-    //
-    // // button to view original article in new tab
-    // var link = document.createElement('a');
-    // link.setAttribute('class', 'popUpAction');
-    // link.setAttribute('href', this.dataArticle.url);
-    // link.setAttribute('target', '_blank');
-    // var linkText = document.createTextNode("Read more from source");
-    // link.appendChild(linkText);
-    // section.appendChild(link);
-    //
-    // $("#popUp").attr('class', 'popUpAction');
+    contentHolder.appendChild(textSection);
+    contentHolder.appendChild(entitySection);
+    container.appendChild(contentHolder);
 
 });
 
