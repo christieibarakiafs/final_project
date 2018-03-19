@@ -95,14 +95,14 @@ $("#ascending").on('click', function () {
 
         movieData.sort(comparePopularity);
         movieData.reverse();
-        addMoviesToDom()
+        addMoviesToDom();
 
     }else{
         this.innerHTML = '&#9651;';
         ascending = true;
 
         movieData.sort(comparePopularity);
-        addMoviesToDom()
+        addMoviesToDom();
     }
 });
 
