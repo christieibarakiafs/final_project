@@ -35,50 +35,76 @@ movieData.sort(comparePopularity);
 movieData.reverse();
 
 
-for(var movieIndex=0 ; movieIndex < 200; movieIndex++){
-
-    // create article
-    var dom_article = document.createElement("ARTICLE");
-    dom_article.className = "movie";
-
-    var dom_sectionImage = document.createElement("SECTION");
-    dom_sectionImage.className = "featuredImage";
-
-    var dom_img = document.createElement("img");
-    dom_img.src = 'https://image.tmdb.org/t/p/w1280/' + movieData[movieIndex].posterUrl;
-
-    dom_sectionImage.appendChild(dom_img);
-
-    var movieYear = document.createElement("h4");
-    var year = movieData[movieIndex].releaseDate === undefined? "" : movieData[movieIndex].releaseDate.substring(0,4);
-    var yearText = document.createTextNode(year);
-    yearText.className = "year";
-    movieYear.appendChild(yearText);
-    dom_sectionImage.appendChild(movieYear);
-
-    dom_article.appendChild(dom_sectionImage);
-
-    var movieTitle = document.createElement("h3");
-    var titleText = document.createTextNode(movieData[movieIndex].title);
-    movieTitle.appendChild(titleText);
-    dom_article.appendChild(movieTitle);
-
-    var textNode = document.createElement("p");
-    textNode.className = "overview";
-    textNode.innerHTML = movieData[movieIndex].overview;
-    dom_article.appendChild(textNode);
+function addMoviesToDom(){
 
     var src = document.getElementsByClassName("data")[0];
-    dom_article.movie = movieData[movieIndex];
-    src.appendChild(dom_article);
+    src.innerHTML = "";
+
+    for(var movieIndex=0 ; movieIndex < 200; movieIndex++){
+
+        // create article
+        var dom_article = document.createElement("ARTICLE");
+        dom_article.className = "movie";
+
+        var dom_sectionImage = document.createElement("SECTION");
+        dom_sectionImage.className = "featuredImage";
+
+        var dom_img = document.createElement("img");
+        dom_img.src = 'https://image.tmdb.org/t/p/w1280/' + movieData[movieIndex].posterUrl;
+
+        dom_sectionImage.appendChild(dom_img);
+
+        var movieYear = document.createElement("h4");
+        var year = movieData[movieIndex].releaseDate === undefined? "" : movieData[movieIndex].releaseDate.substring(0,4);
+        var yearText = document.createTextNode(year);
+        yearText.className = "year";
+        movieYear.appendChild(yearText);
+        dom_sectionImage.appendChild(movieYear);
+
+        dom_article.appendChild(dom_sectionImage);
+
+        var movieTitle = document.createElement("h3");
+        var titleText = document.createTextNode(movieData[movieIndex].title);
+        movieTitle.appendChild(titleText);
+        dom_article.appendChild(movieTitle);
+
+        var textNode = document.createElement("p");
+        textNode.className = "overview";
+        textNode.innerHTML = movieData[movieIndex].overview;
+        dom_article.appendChild(textNode);
+
+        var src = document.getElementsByClassName("data")[0];
+        dom_article.movie = movieData[movieIndex];
+        src.appendChild(dom_article);
+    }
 }
 
-$("#closeDetail").on('click', function () {
-    console.log('byee');
-    $("#movieDetail").hide();
+addMoviesToDom();
 
+
+$("#closeDetail").on('click', function () {
+    $("#movieDetail").hide();
 });
 
+var ascending = false;
+$("#ascending").on('click', function () {
+
+    if(ascending==true){
+        this.innerHTML = '&#9661;';
+        ascending = false;
+
+        movieData.sort(comparePopularity);
+        movieData.reverse();
+        addMoviesToDom()
+
+    }else{
+        this.innerHTML = '&#9651;';
+        ascending = true;
+
+        movieData.sort(comparePopularity);
+        addMoviesToDom()
+    }
+});
 
 $(".data").on('click', '.movie', function () {
 
@@ -218,6 +244,7 @@ movieData.forEach(function(d){
 });
 
 $(document).ready(function () {
+
 
     var ndx = crossfilter(movieData);
 

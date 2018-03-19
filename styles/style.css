@@ -26,7 +26,7 @@ body {
 }
 
 /* Style the top navigation bar */
-.navbar {
+#navbar {
     display: flex;
     background-color: #110934;
     flex-wrap: wrap;
@@ -34,7 +34,7 @@ body {
 }
 
 /* Style the navigation bar links */
-.navbar a {
+#navbar a {
     color: white;
     padding: 14px 20px;
     margin-right: 70px;
@@ -43,7 +43,7 @@ body {
     font-weight: bold;
 }
 
-.dataHeader {
+#dataHeader {
     color: #e8e8e8;
     padding: 14px 15px;
     margin-top: 0px;
@@ -53,18 +53,47 @@ body {
     font-family: 'Rajdhani', sans-serif;
 }
 
-.sortedBy {
-    color: #fb9902;
+#sortedBy {
+    color: #9aaab6;
     padding: 14px 5px;
     margin-top: 0px;
-    margin-right: 200px;
     margin-bottom: 0px;
     text-decoration: none;
     text-align: center;
     font-family: 'Rajdhani', sans-serif;
 }
 
-.navbar p {
+#sortedByValue {
+    color: #9aaab6;
+    padding: 14px 5px;
+    margin-top: 0px;
+    margin-bottom: 10px;
+    text-decoration: none;
+    text-align: center;
+    font-family: 'Rajdhani', sans-serif;
+    border-bottom: 1px solid #5c5c60;
+}
+
+#ascending {
+    color: #9aaab6;
+    padding: 14px 0px;
+    margin-top: 0px;
+    margin-right: 220px;
+    margin-bottom: 10px;
+    text-decoration: none;
+    text-align: center;
+    font-family: 'Rajdhani', sans-serif;
+    border-bottom: 1px solid #5c5c60;
+    font-family: 'Arial Unicode MS', 'Consolas';
+
+}
+
+#sortedByValue:hover {
+    color: #fb9902;
+
+}
+
+#navbar p {
     color: #e8e8e8;
     padding: 14px 20px;
     margin-top: 0px;
@@ -76,7 +105,7 @@ body {
 
 
 /* Change color on hover */
-.navbar a:hover {
+#navbar a:hover {
     background-color: #e8e8e8;
     color: black;
 }
