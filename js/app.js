@@ -1,6 +1,41 @@
+
+
 var movieData = data.movieList;
 
-for(var movieIndex=700 ; movieIndex < 1300; movieIndex++){
+
+function compareDate(a,b){
+    if (a.releaseDate < b.releaseDate)
+        return -1;
+    if (a.releaseDate > b.releaseDate)
+        return 1;
+    return 0;
+}
+
+function compareTitle(a,b) {
+    if (a.title < b.title)
+        return -1;
+    if (a.title > b.title)
+        return 1;
+    return 0;
+}
+
+function comparePopularity(a,b){
+    if (a.popularity < b.popularity)
+        return -1;
+    if (a.popularity > b.popularity)
+        return 1;
+    return 0;
+}
+
+movieData.sort(compareTitle);
+movieData.reverse();
+movieData.sort(compareDate);
+movieData.reverse();
+movieData.sort(comparePopularity);
+movieData.reverse();
+
+
+for(var movieIndex=0 ; movieIndex < 200; movieIndex++){
 
     // create article
     var dom_article = document.createElement("ARTICLE");
@@ -36,7 +71,6 @@ for(var movieIndex=700 ; movieIndex < 1300; movieIndex++){
     var src = document.getElementsByClassName("data")[0];
     dom_article.movie = movieData[movieIndex];
     src.appendChild(dom_article);
-
 }
 
 $("#closeDetail").on('click', function () {
@@ -107,10 +141,6 @@ $(".data").on('click', '.movie', function () {
             orgString = orgString + orgSet[orgIndex];
         }
     }
-
-
-
-
 
     var container = document.getElementById('content');
     container.innerHTML = "";
