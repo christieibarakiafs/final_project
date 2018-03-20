@@ -225,25 +225,25 @@ $(".data").on('click', '.movie', function () {
 });
 
 
-movieData.forEach(function(d){
-
-
-    var title  = "'" + d.title + "'";
-
-
-    if(d.locationSet !== undefined) {
-        var locationSet = d.locationSet;
-        if(locationSet[0].coords !== undefined) {
-
-            d["geo"] = locationSet[0].coords.x + "," + locationSet[0].coords.y + "," + locationSet[0].name;
-
-        }
-    }
-
-
-});
-
 $(document).ready(function () {
+
+    // movieData.forEach(function(d){
+    for(var movieIndex in movieData){
+
+        var d = movieData[movieIndex];
+
+        var title  = "'" + d.title + "'";
+
+
+        if(d.locationSet !== undefined) {
+            var locationSet = d.locationSet;
+            if(locationSet[0].coords !== undefined) {
+                d["geo"] = locationSet[0].coords.x + "," + locationSet[0].coords.y + "," + title.replace(/[_,;]+/g," ").replace(/\s\s+/g, ' ').trim();
+            }
+        }
+
+
+    }
 
 
     var ndx = crossfilter(movieData);
